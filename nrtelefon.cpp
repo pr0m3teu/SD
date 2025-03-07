@@ -44,15 +44,16 @@ void insert_nr(Agenda *& agenda, Nr_Telefon nr)
         agenda->cap->nr = nr.nr;
         agenda->cap->nume = nr.nume;
         agenda->cap->next = nullptr;
-
+        
         return;
     }
-
+    
     if (agenda->len == 1 && agenda->cap->nume == nullptr)
     {
         init_nr(agenda->cap, nr.nume, nr.nr);
         return;
     }
+    agenda->len++;
 
     Nr_Telefon *p = agenda->cap;
     while (p->next != nullptr && strcmp(nr.nume, p->next->nume) > 0)
@@ -66,6 +67,45 @@ void insert_nr(Agenda *& agenda, Nr_Telefon nr)
     q->next = p->next;
     p->next = q;
     
+}
+
+void delete_nr(Agenda *agenda, const char* nume)
+{
+    Nr_Telefon *p = agenda->cap;
+    if (agenda->len == 1 && strcmp(p->nume, nume) == 0)
+    {
+        delete agenda->cap->nume;
+        delete agenda->cap;
+        agenda->cap = nullptr;
+        return;
+    }
+
+    agenda->len--;
+
+    while(strcmp(p->next->nume, nume) != 0 && p != nullptr)
+    {
+        p = p->next;
+    }
+
+    if (p == nullptr) return;
+
+    Nr_Telefon *q = p->next;
+    p->next = q->next;
+    delete q;
+}
+
+unsigned long search_nr(Agenda agenda, const char* nume)
+{
+    Nr_Telefon *p = agenda.cap;
+    if (agenda.len == 1 && strcmp(p->next->nume, nume) == 0) return p->nr;
+
+    while(strcmp(p->next->nume, nume) != 0 && p != nullptr)
+    {
+        // cout << p->nr << endl;
+        p = p->next;
+    }
+    if (p == nullptr) return 0;
+    return p->nr;
 }
 
 

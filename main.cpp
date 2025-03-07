@@ -21,6 +21,10 @@ int main()
 
     show_agenda(*agenda);
 
+    // delete_nr(agenda, nr1->nume);
+
+    // show_agenda(*agenda);
+    cout << search_nr(*agenda, "Mihai Andrei") << endl;
 
     delete agenda;
     return 0;
