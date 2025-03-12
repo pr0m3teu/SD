@@ -56,13 +56,21 @@ void insert_nr(Agenda *& agenda, Nr_Telefon nr)
     agenda->len++;
 
     Nr_Telefon *p = agenda->cap;
+    Nr_Telefon *q = new Nr_Telefon;
+    init_nr(q, nr.nume, nr.nr);
+
+    if (strcmp(nr.nume, p->nume) < 0)
+    {
+        q->next = p;
+        agenda->cap = q;
+        return;
+    }
+
     while (p->next != nullptr && strcmp(nr.nume, p->next->nume) > 0)
     {
         p = p->next;
     }
 
-    Nr_Telefon *q = new Nr_Telefon;
-    init_nr(q, nr.nume, nr.nr);
     
     q->next = p->next;
     p->next = q;
@@ -81,6 +89,12 @@ void delete_nr(Agenda *agenda, const char* nume)
     }
 
     agenda->len--;
+    if (strcmp(nume, p->nume) == 0)
+    {
+        agenda->cap = p->next;
+        delete p;
+        return;
+    }
 
     while(strcmp(p->next->nume, nume) != 0 && p != nullptr)
     {
