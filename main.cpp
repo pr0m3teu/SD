@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include "nrtelefon.h"
 
 using namespace std;
@@ -9,22 +10,65 @@ int main()
     Agenda *agenda = new Agenda;
     init_agenda(agenda);
 
-    Nr_Telefon *nr1 = new Nr_Telefon;
-    Nr_Telefon *nr2 = new Nr_Telefon;
+    size_t op;
 
-    init_nr(nr2, "Mihai Gabriel", 1234);
-    init_nr(nr1, "Mihai Andrei", 1234);
+    cout << "Alegeti o optiune: " << endl;
+    cout << "  1. Adaugare numar in agenda" << endl;
+    cout << "  2. Cautare persoana in agenda" << endl;
+    cout << "  0. Iesire" << endl;
 
-    insert_nr(agenda, *nr2);
-    insert_nr(agenda, *nr1);
-    insert_nr(agenda, *nr1);
+    cout << "Optiune: ";
+    cin >> op;
 
-    show_agenda(*agenda);
+    while (op)
+    {
+        switch (op)
+        {
+            case 0:
+                break;
+            case 1:
+                {
+                    char *nume = new char[100];
+                    cout << "Nume: ";
+                    cin >> nume;
+                    
+                    unsigned long nr;
+                    cout << "Numar telefon: ";
+                    scanf("%lu", &nr);
+                    
+                    Nr_Telefon *numar = new Nr_Telefon;
+                    init_nr(numar, nume, nr);
+                    insert_nr(agenda, *numar);
+                    show_agenda(*agenda);
+                    break;
+                }
+            
+            case 2:
+                {
+                    char nume[100] = {0};
+                    cout << "Nume: ";
+                    cin >> nume;
+                    cout << nume;
 
-    // delete_nr(agenda, nr1->nume);
-
-    // show_agenda(*agenda);
-    cout << search_nr(*agenda, "Mihai Andrei") << endl;
+                    const unsigned long nr = search_nr(*agenda, nume);
+                    if (nr == 0) cout << "Nu s-a putut gasi persoana!" << endl;
+                    else cout << nume << ": " << nr << endl;
+                    break;
+                }
+            
+            default:
+                cout << "Optiune invalida" << endl;
+                break;
+        }
+        cout << endl;
+        cout << "Alegeti o optiune: " << endl;
+        cout << "  1. Adaugare numar in agenda" << endl;
+        cout << "  2. Cautare persoana in agenda" << endl;
+        cout << "  0. Iesire" << endl;
+    
+        cout << "Optiune: ";
+        cin >> op;
+    }
 
     delete agenda;
     return 0;
